@@ -14,6 +14,40 @@
 #include "matrix.h"
 
 
+/*======== struct matrix * make_bezier() ==========
+  Returns: The correct 4x4 matrix that can be used
+  to generate the coefiecients for a bezier curve
+  ====================*/
+struct matrix * make_bezier() {
+    return NULL;
+}
+
+/*======== struct matrix * make_hermite() ==========
+  Returns: The correct 4x4 matrix that can be used
+  to generae the coefiecients for a hermite curve
+  ====================*/
+struct matrix * make_hermite() {
+  return NULL;
+}
+
+/*======== struct matrix * generate_curve_coefs() ==========
+  Inputs:   double p1
+            double p2
+            double p3
+            double p4
+            int type
+  Returns:
+  A matrix containing the values for a, b, c and d of the
+  equation at^3 + bt^2 + ct + d for the curve defined
+  by p1, p2, p3 and p4.
+
+  Type determines whether the curve is bezier or hermite (see matrix.h)
+  ====================*/
+struct matrix * generate_curve_coefs( double p1, double p2,
+                                      double p3, double p4, int type) {
+  return NULL;
+}
+
 /*======== struct matrix * make_translate() ==========
 Inputs:  int x
          int y
@@ -22,7 +56,12 @@ Returns: The translation matrix created using x, y and z
 as the translation offsets.
 ====================*/
 struct matrix * make_translate(double x, double y, double z) {
-  return NULL;
+  struct matrix *t = new_matrix(4, 4);
+  ident(t);
+  t->m[0][3] = x;
+  t->m[1][3] = y;
+  t->m[2][3] = z;
+  return t;
 }
 
 /*======== struct matrix * make_scale() ==========
@@ -33,7 +72,13 @@ Returns: The translation matrix creates using x, y and z
 as the scale factors
 ====================*/
 struct matrix * make_scale(double x, double y, double z) {
-  return NULL;
+  struct matrix *t = new_matrix(4, 4);
+  ident(t);
+  t->m[0][0] = x;
+  t->m[1][1] = y;
+  t->m[2][2] = z;
+
+  return t;
 }
 
 /*======== struct matrix * make_rotX() ==========
@@ -43,17 +88,33 @@ Returns: The rotation matrix created using theta as the
 angle of rotation and X as the axis of rotation.
 ====================*/
 struct matrix * make_rotX(double theta) {
-  return NULL;
+  struct matrix *t = new_matrix(4, 4);
+  ident(t);
+
+  t->m[1][1] = cos(theta);
+  t->m[1][2] = -1 * sin(theta);
+  t->m[2][1] = sin(theta);
+  t->m[2][2] = cos(theta);
+  
+  return t;
 }
 
 /*======== struct matrix * make_rotY() ==========
 Inputs:  double theta
-         char c
+         char c 
 Returns: The rotation matrix created using theta as the 
 angle of rotation and Y as the axis of rotation.
 ====================*/
 struct matrix * make_rotY(double theta) {
-  return NULL;
+  struct matrix *t = new_matrix(4, 4);
+  ident(t);
+  
+  t->m[0][0] = cos(theta);
+  t->m[2][0] = -1 * sin(theta);
+  t->m[0][2] = sin(theta);
+  t->m[2][2] = cos(theta);
+
+  return t;
 }
 
 /*======== struct matrix * make_rotZ() ==========
@@ -63,12 +124,20 @@ Returns: The rotation matrix created using theta as the
 angle of rotation and Z as the axis of rotation.
 ====================*/
 struct matrix * make_rotZ(double theta) {
-  return NULL;
+  struct matrix *t = new_matrix(4, 4);
+  ident(t);
+  
+  t->m[0][0] = cos(theta);
+  t->m[0][1] = -1 * sin(theta);
+  t->m[1][0] = sin(theta);
+  t->m[1][1] = cos(theta);
+
+  return t;
 }
 
 
 /*-------------- void print_matrix() --------------
-Inputs:  struct matrix *m
+Inputs:  struct matrix *m 
 
 print the matrix such that it looks like
 the template in the top comment
