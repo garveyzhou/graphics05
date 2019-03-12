@@ -9,7 +9,7 @@
 #include "matrix.h"
 #include "parser.h"
 
-int main(int argc, char **argv) {
+int main(/*int argc, char **argv*/) {
 
   screen s;
   struct matrix * edges;
@@ -17,7 +17,9 @@ int main(int argc, char **argv) {
 
   edges = new_matrix(4, 4);
   transform = new_matrix(4, 4);
-
+  
+  print_matrix(make_hermite);
+  print_matrix(make_bezier);
   /* print_matrix(make_rotX(M_PI/4)); */
   /* printf("\n"); */
   /* print_matrix(make_rotY(M_PI/4)); */
@@ -25,12 +27,14 @@ int main(int argc, char **argv) {
   /* print_matrix(make_rotZ(M_PI/4)); */
   /* printf("\n"); */
 
+
+  /*
   if ( argc == 2 )
     parse_file( argv[1], transform, edges, s );
   else
     parse_file( "stdin", transform, edges, s );
+  */
 
-  
   free_matrix( edges );
   free_matrix( transform );
-}  
+}
