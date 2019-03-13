@@ -19,15 +19,17 @@
 void add_circle( struct matrix *edges,double cx, double cy, double cz, double r, double step ) {
   double x;
   double y;
-  double  t = 0;
-  double z = cz;
-  while(t <= 1){
+  double x1;
+  double y1;
+  double t = 0;
+  while(t < 1){
     x = r * cos(M_PI * 2 * t)+ cx;
     y = r * sin(M_PI * 2 * t)+ cy;
-    add_point(edges,x,y,z);
     t += step;
+    x1 = r* cos(M_PI* 2 * t) +cx;
+    y1 = r* sin(M_PI * 2* t) + cy;
+    add_edge(edges,x,y,cz,x1,y1,cz);
   }
-
 }
 
 /*======== void add_curve() ==========
@@ -48,15 +50,33 @@ of type specified in type (see matrix.h for curve type constants)
 to the matrix edges
   ====================*/
   void add_curve( struct matrix *edges,double x0, double y0, double x1, double y1,double x2, double y2, double x3, double y3, double step, int type ) {
-    int  t =0;
+    double t = 0;
+    struct matrix * xco = generate_curve_coefs(x0,x1,x2,x3,type);
+    struct matrix * yco = generate_curve_coefs(y0,y1,y2,y3,type);
 
-    if(type == 1){
-      // hermite curve
-      while(t <= 1 ){
+    double ax = xco->m[0][0];
+    double bx = xco->m[1][0];
+    double cx = xco->m[2][0];
+    double dx = xco->m[3][0];
 
-      }
+    double ay = yco->m[0][0];
+    double by = yco->m[1][0];
+    double cy = yco->m[2][0];
+    double dy = yco->m[3][0];
 
+    double x,y;
+    double px,py;
+
+    while(t < 1){
+      x = ax * t * t * t + bx * t * t + cx * t + dx;
+      y = ay * t * t * t + by * t * t  + cy * t + dy;
+      t += step;
+      px = ax * t * t * t + bx * t * t + cx * t + dx;
+      py = ay * t * t * t + by * t * t + cy * t + dy;
+      add_edge(edges,x,y,0,px,py,0);
     }
+    free_matrix(xco);
+    free_matrix(yco);
 }
 
 
